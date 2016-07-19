@@ -1,0 +1,4 @@
+alias gs="git status"
+alias gaa="git add --all"
+
+alias dev="cd ~/dev && tree -L 2 -C --dirsfirst"
