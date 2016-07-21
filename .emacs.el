@@ -5,13 +5,8 @@
 	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
-;; spaceline
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
-
 ;;; load javascript
 (load-file "~/.emacs.d/.javascript.el")
-
 
 ;;; auto-install packages if missing
 (unless package-archive-contents
@@ -20,6 +15,10 @@
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
+
+;; spaceline
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
 
 ;;; disable default \t
 (setq-default indent-tabs-mode nil)
