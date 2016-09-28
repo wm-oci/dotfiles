@@ -1,5 +1,5 @@
 ;; Colorful Markers
-(setq fixme-modes '(emacs-lisp-mode js2-mode))
+(setq fixme-modes '(emacs-lisp-mode js2-mode org-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-important-face)
@@ -14,7 +14,8 @@
            ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
            ("\\<\\(QUESTION\\)" 1 'font-lock-question-face t)
            ("\\<\\(SEE\\)" 1 'font-lock-see-face t)
-           ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+           ("\\<\\(NOTE\\)" 1 'font-lock-note-face t)
+           ("\\<\\(COMMENT\\)" 1 'font-lock-note-face t))))
       fixme-modes)
 (modify-face 'font-lock-fixme-face "#D64C2A" nil nil t nil t nil nil)
 (modify-face 'font-lock-study-face "Yellow" nil nil t nil t nil nil)
@@ -32,6 +33,9 @@
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (font-lock-add-keywords nil my-extra-keywords)))
+
+(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+
+(provide '.javascript.el)
+;;;
