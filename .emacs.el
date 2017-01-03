@@ -5,8 +5,13 @@
 	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
+;; spaceline
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+
 ;;; load javascript
 (load-file "~/.emacs.d/.javascript.el")
+
 
 ;;; auto-install packages if missing
 (unless package-archive-contents
@@ -18,11 +23,6 @@
 
 ;; init exec-path
 (exec-path-from-shell-initialize)
-
-;; spaceline
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
-
 
 ;;; disable default \t
 (setq-default indent-tabs-mode nil)
@@ -77,3 +77,17 @@
 ;; Set your lisp system and, optionally, some contribs
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
+
+;; disappear scroll bar
+(scroll-bar-mode -1)
+
+;;; org mode tag customization
+(setq org-todo-keyword-faces
+      '(
+        ("action" . (:foreground "yellow" :weight bold))
+        ("IF-TIME" . (:foreground "yellow" :weight bold))
+        ("TODO" . (:foreground "purple" :weight bold))
+        ))
+
+(setq org-todo-keywords
+      '((sequence "TODO" "action" "IF-TIME" "DONE")))
