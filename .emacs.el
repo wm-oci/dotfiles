@@ -38,10 +38,6 @@
 
 ;;; keybindings
 (global-set-key (kbd "C-|") 'magit-status)
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-iswitchb)
 (setq-default word-wrap t)
 
 ;;; custom vars
@@ -81,6 +77,12 @@
 ;; disappear scroll bar
 (scroll-bar-mode -1)
 
+;; org mode
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cb" 'org-iswitchb)
+
 ;;; org mode tag customization
 (setq org-todo-keyword-faces
       '(
@@ -91,3 +93,11 @@
 
 (setq org-todo-keywords
       '((sequence "TODO" "action" "IF-TIME" "DONE")))
+
+(setq org-default-notes-file "~/org/notes.org")
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/task-list.org" "Tasks")
+             "* TODO %?\n  %i\n  %a")
+        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+             "* %?\nEntered on %U\n  %i\n  %a")))
