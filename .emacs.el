@@ -7,6 +7,8 @@
 
 ;; spaceline
 (require 'spaceline-config)
+(when (eq system-type 'darwin) ;fix for spaceline on mac
+  (setf ns-use-srgb-colorspace nil))
 (spaceline-spacemacs-theme)
 
 ;;; load javascript
@@ -97,7 +99,15 @@
 (setq org-default-notes-file "~/org/notes.org")
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/task-list.org" "Tasks")
-             "* TODO %?\n  %i\n  %a")
+      '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+         "* TODO %?\n  %a\n  %i")
         ("j" "Journal" entry (file+datetree "~/org/journal.org")
-             "* %?\nEntered on %U\n  %i\n  %a")))
+         "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")
+        ("d" "Dev Note" entry (file+datetree "~/org/devnote.org")
+         "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")
+        ("n" "Note" entry (file+datetree "~/org/notes.org")
+         "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")))
+
+;; persist clocking across emacs sessions
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
