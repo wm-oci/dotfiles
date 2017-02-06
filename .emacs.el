@@ -111,3 +111,18 @@
 ;; persist clocking across emacs sessions
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
+
+;; active Babel languages
+
+(setenv "NODE_PATH"
+  (concat
+    (getenv "HOME") "/org/node_modules" ":"
+    (getenv "NODE_PATH")))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((js . t)
+   (emacs-lisp . t)
+   ))
+
+(setq org-src-fontify-natively t)
