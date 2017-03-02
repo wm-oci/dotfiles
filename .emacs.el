@@ -96,21 +96,27 @@
 (setq org-todo-keywords
       '((sequence "TODO" "action" "IF-TIME" "DONE")))
 
-(setq org-default-notes-file "~/org/notes.org")
+(setq org-default-notes-file "~/Dropbox/Org/agenda/inbox.org")
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
-         "* TODO %?\n  %a\n  %i")
-        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+      '(("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
+         "* TODO %?\n  %a\n  %i" :clock-in t :clock-keep t)
+        ("j" "Journal" entry (file+datetree "~/Dropbox/Org/agenda/journal.org")
          "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")
-        ("d" "Dev Note" entry (file+datetree "~/org/devnote.org")
+        ("d" "Dev Note" entry (file+datetree "~/Dropbox/Org/agenda/devnote.org")
          "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")
-        ("n" "Note" entry (file+datetree "~/org/notes.org")
-         "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")))
+        ("n" "Note" entry (file+datetree "~/Dropbox/Org/agenda/notes.org")
+         "* %?%^G\n  - Entered on %U\n  - Link: %a  \n  - Content:\n  %i")
+        ("n" "Add Note to Clocked in Entry" item (clock)
+          "+ %? (%<%r>)")))
 
 ;; persist clocking across emacs sessions
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
+
+;; org agenda settings
+(setf org-agenda-files '("~/Dropbox/Org/agenda")
+      org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
 ;; active Babel languages
 
