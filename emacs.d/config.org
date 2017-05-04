@@ -32,7 +32,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
       (package-refresh-contents))
 
   (setf package-selected-packages '(org-plus-contrib
-				    magit
+                                    magit
                                     zenburn-theme
                                     spaceline
                                     restclient
@@ -100,14 +100,18 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 (setq org-hide-emphasis-markers t)
 (setq org-src-fontify-natively t)
 
-(setf org-todo-keywords '((sequence "TODO" "IN PROGRESS" "IN REVIEW" "BLOCKED" "DONE"))
+(setf org-todo-keywords '((sequence "BACKLOG" "TODO" "IN PROGRESS" "IN REVIEW" "BLOCKED" "DONE"))
       org-todo-keyword-faces '(
+                               ("BACKLOG" . (:foreground "gray"))
                                ("BLOCKED" . (:foreground "red" :weight bold))
                                ("IN PROGRESS" . (:foreground "green" :weight bold))
-                               ("TODO" . (:foreground "purple" :weight bold)))
+                               ("DONE" . (:foreground "blue"))
+                               ("TODO" . (:foreground "orange" :weight bold)))
       org-startup-indented t
+      org-agenda-files '("~/Dropbox/Org/agenda")
       org-agenda-skip-scheduled-if-deadline-is-shown t
-      org-default-notes-file '("~/Dropbox/Org/agenda/inbox.org"))
+      org-default-notes-file '("~/Dropbox/Org/agenda/inbox.org")
+      org-agenda-text-search-extra-files (directory-files-recursively "~/Dropbox/Org/" "\.org$"))
 
 (setf org-capture-templates
       '(("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
@@ -123,8 +127,10 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
         ("n" "Random" entry (file+datetree "~/Dropbox/Org/agenda/rand.org")
          "* %?%^G\nCreated: %U\nContext: %a\n %i")))
 
-(setq org-clock-idle-time 10)
-(setq org-clock-persist 'history)
+(setf org-clock-idle-time 10
+      org-agenda-skip-scheduled-if-deadline-is-shown t
+      org-clock-persist 'history)
+
 (org-clock-persistence-insinuate)
 
 #+END_SRC
