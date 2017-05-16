@@ -32,6 +32,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
       (package-refresh-contents))
 
   (setf package-selected-packages '(org-plus-contrib
+                                    haskell-mode
                                     magit
                                     zenburn-theme
                                     spaceline
@@ -40,7 +41,8 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
                                     web-mode
                                     flycheck
                                     exec-path-from-shell
-                                    multiple-cursors))
+                                    multiple-cursors
+                                    haskell-mode))
 
   (package-install-selected-packages)
   (exec-path-from-shell-initialize)
@@ -86,6 +88,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-xt" 'toggle-truncate-lines)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 #+END_SRC
@@ -117,7 +120,9 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
       '(("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
          "* TODO %?%^G\nSCHEDULED: %^T Created: %U\n  Context: %a\n  %i" :clock-in t :clock-keep t)
         ("j" "Journal" entry (file+datetree "~/Dropbox/Org/agenda/journal.org")
-         "* %?%^G\nCreated: %U\nComtext: %a\n  %i")
+         "* %?%^G\nCreated: %U\nContext: %a\n  %i")
+        ("m" "Meeting" entry (file+datetree "~/Dropbox/Org/agenda/meetings.org")
+         "* %?%^G\nCreated: %U\nContext: %a\n  %i")
         ("d" "Dev Note" entry (file+datetree "~/Dropbox/Org/agenda/dev.org")
          "* %?%^G\nCreated: %U\nContext: %a\n %i")
         ("d" "Lit Note" entry (file+datetree "~/Dropbox/Org/agenda/lit.org")
@@ -128,6 +133,8 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
          "* %?%^G\nCreated: %U\nContext: %a\n %i")))
 
 (setf org-clock-idle-time 10
+      org-lowest-priority ?E
+      org-default-priority ?E
       org-agenda-skip-scheduled-if-deadline-is-shown t
       org-clock-persist 'history)
 
