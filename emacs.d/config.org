@@ -59,7 +59,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
   (when (eq system-type 'darwin) ; fix for spaceline on mac
     (setf ns-use-srgb-colorspace nil))
   (spaceline-spacemacs-theme)
-(load-theme 'zenburn t)
+(load-theme 'rebecca t)
 (show-paren-mode t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -87,6 +87,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cg" 'org-clock-goto)
 (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-xt" 'toggle-truncate-lines)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -117,24 +118,30 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
       org-agenda-text-search-extra-files (directory-files-recursively "~/Dropbox/Org/" "\.org$"))
 
 (setf org-capture-templates
-      '(("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
-         "* TODO %?%^G\nSCHEDULED: %^T Created: %U\n  Context: %a\n  %i" :clock-in t :clock-keep t)
+      '(("c" "Clock into New Blank Item")
+        ("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
+         "* TODO %?%^G\nCreated: %U\nContext: %a\n  %i" :clock-in t :clock-keep t)
+        ("x" "MemCon" entry (file+datetree "~/Dropbox/Org/agenda/memcon.org" )
+         "* %?%^G\nCreated: %U")
         ("j" "Journal" entry (file+datetree "~/Dropbox/Org/agenda/journal.org")
          "* %?%^G\nCreated: %U\nContext: %a\n  %i")
         ("m" "Meeting" entry (file+datetree "~/Dropbox/Org/agenda/meetings.org")
-         "* %?%^G\nCreated: %U\nContext: %a\n  %i")
+         "* %?%^G\nCreated: %U")
         ("d" "Dev Note" entry (file+datetree "~/Dropbox/Org/agenda/dev.org")
          "* %?%^G\nCreated: %U\nContext: %a\n %i")
-        ("d" "Lit Note" entry (file+datetree "~/Dropbox/Org/agenda/lit.org")
+        ("l" "Lit Note" entry (file+datetree "~/Dropbox/Org/agenda/lit.org")
+         "* %?%^G\nCreated: %U")
+        ("p" "Phil Note" entry (file+datetree "~/Dropbox/Org/agenda/phil.org")
+         "* %?%^G\nCreated: %U")
+        ("r" "Random" entry (file+datetree "~/Dropbox/Org/agenda/rand.org")
          "* %?%^G\nCreated: %U\nContext: %a\n %i")
-        ("d" "Phil Note" entry (file+datetree "~/Dropbox/Org/agenda/phil.org")
-         "* %?%^G\nCreated: %U\nContext: %a\n %i")
-        ("n" "Random" entry (file+datetree "~/Dropbox/Org/agenda/rand.org")
-         "* %?%^G\nCreated: %U\nContext: %a\n %i")))
+        ("b" "Add Checkbox to Clocked in Entry" item (clock) 
+         "+ [ ] %? (%<%r>)" :prepend t)))
 
 (setf org-clock-idle-time 10
       org-lowest-priority ?E
       org-default-priority ?E
+      org-log-done 'time
       org-agenda-skip-scheduled-if-deadline-is-shown t
       org-clock-persist 'history)
 
