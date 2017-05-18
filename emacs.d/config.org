@@ -34,6 +34,8 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
   (setf package-selected-packages '(org-plus-contrib
                                     haskell-mode
                                     magit
+                                    rebecca
+                                    helm-config
                                     zenburn-theme
                                     spaceline
                                     restclient
@@ -121,7 +123,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
       '(("c" "Clock into New Blank Item")
         ("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
          "* TODO %?%^G\nCreated: %U\nContext: %a\n  %i" :clock-in t :clock-keep t)
-        ("x" "MemCon" entry (file+datetree "~/Dropbox/Org/agenda/memcon.org" )
+        ("x" "MemCon" entry (file+datetree "~/Dropbox/Org/agenda/memcon.org")
          "* %?%^G\nCreated: %U")
         ("j" "Journal" entry (file+datetree "~/Dropbox/Org/agenda/journal.org")
          "* %?%^G\nCreated: %U\nContext: %a\n  %i")
@@ -136,7 +138,10 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
         ("r" "Random" entry (file+datetree "~/Dropbox/Org/agenda/rand.org")
          "* %?%^G\nCreated: %U\nContext: %a\n %i")
         ("b" "Add Checkbox to Clocked in Entry" item (clock) 
-         "+ [ ] %? (%<%r>)" :prepend t)))
+         "+ [ ] %? (%<%r>)" :prepend t)
+        ("z" "Add Link To This Context to Clocked in Entry" item (clock)
+         "- %a \n- %f" :prepend t)))
+
 
 (setf org-clock-idle-time 10
       org-lowest-priority ?E
