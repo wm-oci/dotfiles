@@ -158,7 +158,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 
 #+BEGIN_SRC emacs-lisp
 
-(setq fixme-modes '(emacs-lisp-mode js2-mode org-mode))
+(setq fixme-modes '(emacs-lisp-mode js2-mode org-mode haskell-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-important-face)
@@ -196,6 +196,15 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+
+#+END_SRC
+
+* Haskell
+
+#+BEGIN_SRC emacs-list
+
+(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.hs\\'" . intero-mode))
 
 #+END_SRC
 
