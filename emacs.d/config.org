@@ -52,6 +52,29 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 
 #+END_SRC
 
+* Flycheck Eslint
+
+Use flycheck for linting.  The airbnb-extension seems to always have problems.  This snippet preferes using the local instead of the global eslint module.
+
+http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+
+General Flycheck/Eslint setup tips:
+http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usage
+
+#+BEGIN_SRC emacs-lisp
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+
+#+END_SRC
+
 * Appearance
 
 #+BEGIN_SRC emacs-lisp
@@ -120,13 +143,14 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
       org-agenda-text-search-extra-files (directory-files-recursively "~/Dropbox/Org/" "\.org$"))
 
 (setf org-capture-templates
-      '(("c" "Clock into New Blank Item")
-        ("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
+      '(("c" "Clock into New Task" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
          "* TODO %?%^G\nCreated: %U\nContext: %a\n  %i" :clock-in t :clock-keep t)
+        ("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
+         "* TODO %?%^G\nCreated: %U\nContext: %a\n  %i")
         ("x" "MemCon" entry (file+datetree "~/Dropbox/Org/agenda/memcon.org")
          "* %?%^G\nCreated: %U")
-        ("j" "Journal" entry (file+datetree "~/Dropbox/Org/agenda/journal.org")
-         "* %?%^G\nCreated: %U\nContext: %a\n  %i")
+        ("i" "Calendar Item/Event" entry (file+datetree "~/Dropbox/Org/agenda/calendar.org")
+         "* %?%^G")
         ("m" "Meeting" entry (file+datetree "~/Dropbox/Org/agenda/meetings.org")
          "* %?%^G\nCreated: %U")
         ("d" "Dev Note" entry (file+datetree "~/Dropbox/Org/agenda/dev.org")
@@ -196,6 +220,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
 
 #+END_SRC
 
@@ -226,3 +251,5 @@ Define a node path for use with babel and define a place for babel to look for n
    ))
 
 #+END_SRC
+
+
