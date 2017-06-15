@@ -16,6 +16,16 @@ Tell emacs to put any customization options in a separate file
   (load custom-file t)
 #+END_SRC
 
+* Startup
+
+I want my inital buffer to be my agenda for today
+
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-splash-screen t)
+(add-hook 'after-init-hook '(lambda () (org-agenda-list 1)))
+(delete-other-windows)
+#+END_SRC
+
 * Package
 
 This adds melpa, loads packages, and installs all the packages I want. =package-selected-packages= is new in Emacs 25 and makes it easy to get all your packages installed on new computers.
