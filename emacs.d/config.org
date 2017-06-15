@@ -178,7 +178,8 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 #+END_SRC
 
-* JS2 
+* Notation Fonts
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -206,6 +207,12 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 (modify-face 'font-lock-question-face "#ffa500" nil nil t nil t nil nil)
 (modify-face 'font-lock-see-face "#88C9F0" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "#8ABB93" nil nil t nil t nil nil)
+
+#+END_SRC
+
+* JavaScript
+
+#+BEGIN_SRC emacs-lisp
 
 (setq js2-basic-offset 2)
 
