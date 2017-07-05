@@ -50,6 +50,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
                                     spaceline
                                     restclient
                                     js2-mode
+                                    rjsx-mode
                                     web-mode
                                     flycheck
                                     exec-path-from-shell
@@ -232,8 +233,9 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
             (make-local-variable 'js-indent-level)
             (setq js-indent-level 2)))
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+(add-to-list 'interpreter-mode-alist '("node" . rjsx-mode))
 
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
