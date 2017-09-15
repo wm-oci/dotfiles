@@ -43,6 +43,7 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 
   (setf package-selected-packages '(org-plus-contrib
                                     haskell-mode
+                                    intero-mode
                                     magit
                                     rebecca
                                     helm-config
@@ -54,12 +55,16 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
                                     web-mode
                                     flycheck
                                     exec-path-from-shell
-                                    multiple-cursors
-                                    haskell-mode))
+                                    tuareg
+                                    ensime
+                                    ))
 
   (package-install-selected-packages)
   (exec-path-from-shell-initialize)
   (add-to-list 'exec-path "~/.nix-profile/bin")
+  (add-to-list 'exec-path "/usr/local/bin")
+
+
 
 #+END_SRC
 
@@ -154,7 +159,7 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
       org-agenda-text-search-extra-files (directory-files-recursively "~/Dropbox/Org/" "\.org$"))
 
 (setf org-capture-templates
-      '(("c" "Clock into New Task" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
+'(("c" "Clock into New Task" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
          "* TODO %?%^G\nCreated: %U\nContext: %a\n  %i" :clock-in t :clock-keep t)
         ("t" "Tasks" entry (file+headline "~/Dropbox/Org/agenda/tasks.org" "Tasks")
          "* TODO %?%^G\nCreated: %U\nContext: %a\n  %i")
@@ -187,6 +192,18 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 (org-clock-persistence-insinuate)
 
+;; create a function to archive all done tasks
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (outline-previous-heading)))
+   "/DONE" 'tree))
+
+
+
+
 #+END_SRC
 
 * Notation Fonts
@@ -194,7 +211,7 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 #+BEGIN_SRC emacs-lisp
 
-(setq fixme-modes '(emacs-lisp-mode js2-mode org-mode haskell-mode))
+(setq fixme-modes '(emacs-lisp-mode js2-mode rjsx-mode org-mode haskell-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-important-face)
@@ -245,12 +262,32 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 * Haskell
 
-#+BEGIN_SRC emacs-list
+The only way I was able to get this work was by installing ghci directlly, in addition to using stack.
+
+So I basically have two different ghci's.
+
+#+BEGIN_SRC emacs-lisp
 
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . intero-mode))
 
 #+END_SRC
+
+* OCaml
+
+Per the install instructuions for the tuareg package:
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path "DIR")
+#+end_src
+
+* Scala
+
+This configuration needs some supplementary steps...
+ #+begin_src emacs-lisp
+
+(load "~/.emacs.d/ob-scala.el")
+#+end_src
 
 * Babel
 
@@ -267,8 +304,24 @@ Define a node path for use with babel and define a place for babel to look for n
  'org-babel-load-languages
  '((js . t)
    (emacs-lisp . t)
+   (haskell . t)
+   (scala . t)
+   (ocaml . t)
    ))
 
 #+END_SRC
 
+* Custom Functions
 
+In some projects, file structures produce many files of the same name, but in different directories.  
+
+So I need a quick, key-bound junction to display the full pack of the current buffer in the minibuffer.
+#+BEGIN_SRC emacs-lisp
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name))
+)
+(global-set-key "\C-cz" 'show-file-name)
+#+END_SRC
