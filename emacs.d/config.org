@@ -1,4 +1,4 @@
-#+AUTHOR: Walker Malling
+S#+AUTHOR: Walker Malling
 #+TITLE: Emacs Configuration
 
 My =init.el= file uses =org-babel-load-file= to load the Emacs Lisp source code blocks in this document.  
@@ -57,6 +57,9 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
                                     exec-path-from-shell
                                     tuareg
                                     ensime
+                                    pinentry
+                                    evil
+                                    markdown-mode
                                     ))
 
   (package-install-selected-packages)
@@ -64,9 +67,19 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
   (add-to-list 'exec-path "~/.nix-profile/bin")
   (add-to-list 'exec-path "/usr/local/bin")
 
-
+  (require 'cl)
+  (require 'org-drill)
 
 #+END_SRC
+
+* Pinentry
+
+Enable pinentry
+
+#+begin_src emacs-lisp
+(setenv "INSIDE_EMACS" (format "%s,comint" emacs-version))
+(pinentry-start)
+#+end_src
 
 * Flycheck Eslint
 
@@ -144,18 +157,17 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 (setq org-hide-emphasis-markers t)
 (setq org-src-fontify-natively t)
+(setq org-list-allow-alphabetical t)
 
-(setf org-todo-keywords '((sequence "BACKLOG" "TODO" "IN PROGRESS" "IN REVIEW" "BLOCKED" "DONE"))
+(setf org-todo-keywords '((sequence "TODO(t)" "BLACKLODGE(b)" "ELECTRIC(f)" "DONE(d)"))
       org-todo-keyword-faces '(
-                               ("BACKLOG" . (:foreground "gray"))
-                               ("BLOCKED" . (:foreground "red" :weight bold))
-                               ("IN PROGRESS" . (:foreground "green" :weight bold))
-                               ("DONE" . (:foreground "blue"))
+                               ("BLACKLODGE" . (:foreground "gray"))
+                               ("ELECTRIC" . (:foreground "red" :weight bold :style italic))
+                               ("DONE" . (:foreground "white" :style ))
                                ("TODO" . (:foreground "orange" :weight bold)))
       org-startup-indented t
       org-agenda-files '("~/Dropbox/Org/agenda")
       org-agenda-skip-scheduled-if-deadline-is-shown t
-      org-default-notes-file '("~/Dropbox/Org/agenda/inbox.org")
       org-agenda-text-search-extra-files (directory-files-recursively "~/Dropbox/Org/" "\.org$"))
 
 (setf org-capture-templates
@@ -177,6 +189,10 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
          "* %?%^G\nCreated: %U")
         ("r" "Random" entry (file+datetree "~/Dropbox/Org/agenda/rand.org")
          "* %?%^G\nCreated: %U\nContext: %a\n %i")
+
+        ("f" "Flashcard to current buffer" entry (file+headline (buffer-file-name) "Flash Cards")
+         "* %? :drill:\nPrompt:\n** Answer") 
+
         ("b" "Add Checkbox to Clocked in Entry" item (clock) 
          "+ [ ] %? (%<%r>)" :prepend t)
         ("z" "Add Link To This Context to Clocked in Entry" item (clock)
@@ -192,8 +208,14 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 (org-clock-persistence-insinuate)
 
+;; start flyspell in org-mode
+(add-hook 'org-mode-hook 'turn-on-flyspell)
+
+(setf ispell-personal-dictionary "~/Dropbox/Org/dictionary")
+
 ;; create a function to archive all done tasks
 (defun org-archive-done-tasks ()
+
   (interactive)
   (org-map-entries
    (lambda ()
@@ -201,10 +223,16 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
      (setq org-map-continue-from (outline-previous-heading)))
    "/DONE" 'tree))
 
-
-
-
 #+END_SRC
+
+* Info Mode
+
+Add custom directory to INFOPATH
+
+#+begin_src emacs-lisp
+;; disable this and install sicp from melpa
+;; (add-to-list 'Info-default-directory-list "~/Dropbox/Org/info/")
+#+end_src
 
 * Notation Fonts
 
@@ -240,9 +268,14 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 
 * JavaScript
 
+Configure indentation.  Fix rjsx-mode & js-mode default indentation for switch statements.
+
+Associate rjsx-mode to .js and .jsx files.
+
 #+BEGIN_SRC emacs-lisp
 
 (setq js2-basic-offset 2)
+(setq js-switch-indent-offset 2)
 
 ;; JSON files are opened with js-mode
 (add-hook 'js-mode-hook
@@ -269,7 +302,7 @@ So I basically have two different ghci's.
 #+BEGIN_SRC emacs-lisp
 
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.hs\\'" . intero-mode))
+;; (add-to-list 'auto-mode-alist '("\\.hs\\'" . intero-mode))
 
 #+END_SRC
 
