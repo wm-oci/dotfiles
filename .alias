@@ -1,4 +1,21 @@
+#!/bin/bash
+
 alias gs="git status"
 alias gaa="git add --all"
 
 alias dev="cd ~/dev && tree -L 2 -C --dirsfirst"
+
+# GO TO PROJECT
+# NOTE: requires commandutils for gls
+function p {
+    dir=$(pwd)
+    if [ -d "$dir/dev/$1" ]; then
+        cd "$dir/dev/$1" && gls -AFGo --color --group-directories-first
+    elif [ -d "$dir/dev/nbcnews/$1" ]; then
+        cd "$dir/dev/nbcnews/$1" &&  gls -AFGo --color --group-directories-first
+    fi
+}
+
+# Use terminal for pinentry
+
+export GPG_TTY=`tty`
