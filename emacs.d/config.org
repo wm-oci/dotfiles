@@ -1,4 +1,4 @@
-S#+AUTHOR: Walker Malling
+#+AUTHOR: Walker Malling
 #+TITLE: Emacs Configuration
 
 My =init.el= file uses =org-babel-load-file= to load the Emacs Lisp source code blocks in this document.  
@@ -64,11 +64,11 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
 
   (package-install-selected-packages)
   (exec-path-from-shell-initialize)
-  (add-to-list 'exec-path "~/.nix-profile/bin")
+  ;; (add-to-list 'exec-path "~/.nix-profile/bin")
   (add-to-list 'exec-path "/usr/local/bin")
 
   (require 'cl)
-  (require 'org-drill)
+  ;; (require 'org-drill)
 
 #+END_SRC
 
@@ -311,7 +311,7 @@ So I basically have two different ghci's.
 Per the install instructuions for the tuareg package:
 
 #+begin_src emacs-lisp
-(add-to-list 'load-path "DIR")
+;; (add-to-list 'load-path "DIR")
 #+end_src
 
 * Scala
@@ -319,7 +319,7 @@ Per the install instructuions for the tuareg package:
 This configuration needs some supplementary steps...
  #+begin_src emacs-lisp
 
-(load "~/.emacs.d/ob-scala.el")
+;; (load "~/.emacs.d/ob-scala.el")
 #+end_src
 
 * Babel
