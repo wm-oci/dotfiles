@@ -45,9 +45,12 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
                                     haskell-mode
                                     intero-mode
                                     magit
+                                    solarized-theme
                                     rebecca
+                                    projectile
+                                    helm
                                     helm-config
-                                    zenburn-theme
+                                    helm-projectile
                                     spaceline
                                     restclient
                                     js2-mode
@@ -60,12 +63,23 @@ This adds melpa, loads packages, and installs all the packages I want. =package-
                                     pinentry
                                     evil
                                     markdown-mode
+                                    undo-tree
                                     ))
 
   (package-install-selected-packages)
   (exec-path-from-shell-initialize)
   ;; (add-to-list 'exec-path "~/.nix-profile/bin")
   (add-to-list 'exec-path "/usr/local/bin")
+
+  (projectile-global-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on)
+
+  (require 'evil)
+  (evil-mode 1)
+
+  (require 'helm-config)
+  (helm-mode 1)
 
   (require 'cl)
   ;; (require 'org-drill)
@@ -113,7 +127,7 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
   (when (eq system-type 'darwin) ; fix for spaceline on mac
     (setf ns-use-srgb-colorspace nil))
   (spaceline-spacemacs-theme)
-(load-theme 'rebecca t)
+(load-theme 'solarized-light t)
 (show-paren-mode t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -146,6 +160,9 @@ http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#flycheck_usa
 (global-set-key "\C-xt" 'toggle-truncate-lines)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+(global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
 #+END_SRC
 
 * Org Mode
@@ -305,23 +322,6 @@ So I basically have two different ghci's.
 ;; (add-to-list 'auto-mode-alist '("\\.hs\\'" . intero-mode))
 
 #+END_SRC
-
-* OCaml
-
-Per the install instructuions for the tuareg package:
-
-#+begin_src emacs-lisp
-;; (add-to-list 'load-path "DIR")
-#+end_src
-
-* Scala
-
-This configuration needs some supplementary steps...
- #+begin_src emacs-lisp
-
-;; (load "~/.emacs.d/ob-scala.el")
-#+end_src
-
 * Babel
 
 Define a node path for use with babel and define a place for babel to look for npm modules.
@@ -344,17 +344,3 @@ Define a node path for use with babel and define a place for babel to look for n
 
 #+END_SRC
 
-* Custom Functions
-
-In some projects, file structures produce many files of the same name, but in different directories.  
-
-So I need a quick, key-bound junction to display the full pack of the current buffer in the minibuffer.
-#+BEGIN_SRC emacs-lisp
-(defun show-file-name ()
-  "Show the full path file name in the minibuffer."
-  (interactive)
-  (message (buffer-file-name))
-  (kill-new (file-truename buffer-file-name))
-)
-(global-set-key "\C-cz" 'show-file-name)
-#+END_SRC
