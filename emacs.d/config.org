@@ -153,7 +153,18 @@ Web Mode
 * Projectile
 #+BEGIN_SRC emacs-lisp
 (setq projetile-completion-system 'helm)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
+
+* Yasnippet
+
+#+begin_src emacs-lisp
+(require 'yasnippet)
+(yas-global-mode 1)
+(setq yas-snippet-dirs '("~/.emacs.d/yasnippet"))
+#+end_src
 
 * Org
 
