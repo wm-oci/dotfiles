@@ -170,21 +170,16 @@ Set org-drill directories to look in any file in my org directory.
 #+end_src
 
 Set TODO sequence:
-- TODO
-- NEXT
-- ELECTRIC
-- BLOCKED
-- DONE
-- CANCELLED
 
 #+begin_src emacs-lisp
 (setf org-todo-keywords
-  '((sequence "TODO(t)" "NEXT(n)" "ELECTRIC(a)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)"))
-      org-todo-keyword-faces '(
-                               ("BLOCKED" . (:foreground "gray"))
-                               ("ELECTRIC" . (:foreground "red" :weight bold :style italic))
-                               ("DONE" . (:foreground "black" :style ))
-                               ("TODO" . (:foreground "orange" :weight bold))))
+  '((sequence "TODO(t)" "NEXT(n)" "ELECTRIC(e)" "BLOCKED(b)" "LTP(l)" "|" "DONE(d)" "CANCELLED(c)"))
+      org-todo-keyword-faces '(("TODO"      . (:foreground "white"))
+                               ("NEXT"      . (:foreground "green"))
+                               ("BLOCKED"   . (:foreground "red"))
+                               ("ELECTRIC"  . (:foreground "blue"    :weight bold :style italic))
+                               ("DONE"      . (:foreground "black"  :style ))
+                               ("CANCELLED" . (:foreground "black"  :style ))))
 #+end_src
 
 Tell org where to look for agenda files.
@@ -204,13 +199,25 @@ Configure appearance and clock behavior.
       org-list-allow-alphabetical t)
 #+end_src
 
+https://orgmode.org/worg/org-tutorials/advanced-searching.html
+
 #+begin_src emacs-lisp
 (setq org-agenda-custom-commands
       '(
         ("r" "refile and next"
              ((agenda "")
-              (tags-todo "refile")
-              (todo "NEXT")))
+              (tags "refile"
+                    ((org-agenda-overriding-header "Refile")))
+              (todo "ELECTRIC"
+                    ((org-agenda-overriding-header "ELECTRIC!")))
+              (todo "NEXT"
+                    ((org-agenda-overriding-header "Next")))
+              (tags "-refile/!-NEXT-ELECTRIC"
+                    ((org-agenda-overriding-header "Other Todo")))
+              (tags "LTP"
+                    ((org-agenda-overriding-header "Long Term Project")))
+))
+
         ))
 #+end_src
 
@@ -252,6 +259,11 @@ Templates definitions have the following parameters:
           (file+headline "~/Dropbox/Org/agenda/inbox.org" "Refile")
           "* TODO %^{title} %^G:refile:\nCreated: %U \n%?"
           :clock-in t)
+
+    ("c" "Calendar Item"
+          entry
+          (file+datetree "~/dev/org/agenda/calendar.org")
+          "* %^{Title} %^G\n%^t%?")
 
     ("f" "Flashcard"
           entry
